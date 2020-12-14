@@ -3,9 +3,9 @@ Elasticsearch란?
 사용자가 서버나 데이터베이스로부터 원하는 데이터를 실시간으로 수집하고 검색, 분석하여 시각화 시키는 오픈소스 서비스이다.
 기존의 ELK Solution (Elastic Search + Logstash + Kibana)에 Beats가 추가되면서 Elastic Stack 이라는 이름으로 서비스를 제공한다.
 
-*Logstash
+* Logstash
   * 다양한 소스(DB, csv파일 등)의 로그 또는 트랜잭션 데이터를 수집, 집계, 파싱하여 Elasticsearch로 전달
-  * <img src="https://t1.daumcdn.net/cfile/tistory/999F343A5C51BB3018" width="350px" height="150px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+  * <img src="https://t1.daumcdn.net/cfile/tistory/999F343A5C51BB3018" width="400px" height="120px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
   
   * input
     * 입력을 사용하여 Logstash에 데이터 수집
@@ -73,8 +73,6 @@ Elasticsearch를 구성하는 하나의 단위 프로세스를 의미합니다.
  
   * Replica  
   노드를 손실했을 경우 데이터 신뢰성을 위해 샤드들을 복제한 것, replica는 서로 다른 노드에 존재할 것을 권장  
-  
-  <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile29.uf.tistory.com%2Fimage%2F991563425C98CB341A49D4" width="450x" height="250px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
 
 Elasticsearch 특징
 ------------------
