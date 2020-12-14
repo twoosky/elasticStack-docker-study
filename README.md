@@ -5,7 +5,7 @@ Elasticsearch란?
 
 *Logstash
   * 다양한 소스(DB, csv파일 등)의 로그 또는 트랜잭션 데이터를 수집, 집계, 파싱하여 Elasticsearch로 전달
-  * <img src="https://t1.daumcdn.net/cfile/tistory/999F343A5C51BB3018" width="200px" height="100px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+  * <img src="https://t1.daumcdn.net/cfile/tistory/999F343A5C51BB3018" width="350px" height="150px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
   
   * input
     * 입력을 사용하여 Logstash에 데이터 수집
@@ -34,11 +34,11 @@ Elasticsearch란?
 * Beats
   * 데이터를 Logstash 또는 ElasticSearch로 전송
   
-<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile5.uf.tistory.com%2Fimage%2F993B7E495C98CAA7064E0B" width="400px" height="220px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile5.uf.tistory.com%2Fimage%2F993B7E495C98CAA7064E0B" width="800px" height="500px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
 
 Elasticsearch 아키텍쳐 / 용어 정리
 -------------------------------
-<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F99A97A355C98D42D2E5196" width="350px" height="220px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F99A97A355C98D42D2E5196" width="650px" height="400px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
 
 * 클러스터(cluster)  
 클러스터란 Elasticsearch에서 가장 큰 시스템 단위를 의미하며, 최소 하나 이상의 노드로 이루어진 노드들의 집합입니다. 서로 다른 클러스터는 데이터의 접근, 교환을 할 수 없는 독립적인 시스템으로 유지되며, 
@@ -74,7 +74,7 @@ Elasticsearch를 구성하는 하나의 단위 프로세스를 의미합니다.
   * Replica  
   노드를 손실했을 경우 데이터 신뢰성을 위해 샤드들을 복제한 것, replica는 서로 다른 노드에 존재할 것을 권장  
   
-  <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile29.uf.tistory.com%2Fimage%2F991563425C98CB341A49D4" width="200x" height="120px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+  <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile29.uf.tistory.com%2Fimage%2F991563425C98CB341A49D4" width="450x" height="250px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
 
 Elasticsearch 특징
 ------------------
@@ -90,11 +90,17 @@ Json 문서를 통해 데이터 검색을 수행하므로 스키마 개념이 �
 * Restful  
 데이터 CURD작업은 HTTP Restful API를 통해 수행하며, 각각 다음과 같이 대응
 |Data CRUD|Elasticsearch Restful|
-|---|---|
-|SELECT|GET|
-|INSERT|PUT|
-|UPDATE|POST|
-|DELETE|DELETE|
+|---------|---------------------|
+|SELECT   |GET                  |
+|INSERT   |PUT                  |
+|UPDATE   |POST                 |
+|DELETE   |DELETE               |
+
+| Header One | Header Two | Header Three | Header Four | 
+| ---------- | :--------- | :----------: | ----------: | 
+| Default | Left | Center | Right |
+
+출처: https://poorman.tistory.com/352 [poorman]
 
     
     
