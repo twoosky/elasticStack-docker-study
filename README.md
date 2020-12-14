@@ -3,23 +3,27 @@ Elasticsearch란?
 사용자가 서버나 데이터베이스로부터 원하는 데이터를 실시간으로 수집하고 검색, 분석하여 시각화 시키는 오픈소스 서비스이다.
 기존의 ELK Solution (Elastic Search + Logstash + Kibana)에 Beats가 추가되면서 Elastic Stack 이라는 이름으로 서비스를 제공한다.
 
-* Logstash
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile5.uf.tistory.com%2Fimage%2F993B7E495C98CAA7064E0B" width="650px" height="400px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+
+* Logstash  
   * 다양한 소스(DB, csv파일 등)의 로그 또는 트랜잭션 데이터를 수집, 집계, 파싱하여 Elasticsearch로 전달
-  * <img src="https://t1.daumcdn.net/cfile/tistory/999F343A5C51BB3018" width="400px" height="120px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+  <img src="https://t1.daumcdn.net/cfile/tistory/999F343A5C51BB3018" width="400px" height="120px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
   
-  * input
-    * 입력을 사용하여 Logstash에 데이터 수집
+  * input    
+  입력을 사용하여 Logstash에 데이터 수집
     
-  * Filter
-    * 형식이나 복잡성에 상관없이 설정을 통해 데이터를 동적으로 변환
+  * Filter  
+  형식이나 복잡성에 상관없이 설정을 통해 데이터를 동적으로 변환
+    
      1. grok : 구문 분석 및 임의의 텍스트로 구성
      2. mutate : 이벤트 필드에서 일반적인 변환을 수행
      3. drop : 이벤트를 삭제
      4. clone : 이벤트의 복사본을 만듦
      5. geoip : ip 주소의 지리적 위치에 대한 정보를 추가
     
-  * output
-    * ElasticSearch, Email, ESC, Kafka등 원하는 저장소에 데이터를 전송
+  * output  
+  ElasticSearch, Email, ESC, Kafka등 원하는 저장소에 데이터를 전송
+    
     1. Elasticsearch : 수집한 데이터를 Elasticsearch에 전송
     2. file : 디스크 파일에 기록
     3. graphite : graphite에 전송 ( Graphite 란 메트릭을 저장하고 그래프로 작성하는데 사용되는 오픈 소스 도구)
@@ -33,8 +37,6 @@ Elasticsearch란?
 
 * Beats
   * 데이터를 Logstash 또는 ElasticSearch로 전송
-  
-<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile5.uf.tistory.com%2Fimage%2F993B7E495C98CAA7064E0B" width="700px" height="450px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
 
 Elasticsearch 아키텍쳐 / 용어 정리
 -------------------------------
