@@ -34,7 +34,7 @@ Elasticsearch란?
 * Beats
   * 데이터를 Logstash 또는 ElasticSearch로 전송
   
-<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile5.uf.tistory.com%2Fimage%2F993B7E495C98CAA7064E0B" width="800px" height="500px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile5.uf.tistory.com%2Fimage%2F993B7E495C98CAA7064E0B" width="700px" height="450px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
 
 Elasticsearch 아키텍쳐 / 용어 정리
 -------------------------------
@@ -89,16 +89,13 @@ Json 문서를 통해 데이터 검색을 수행하므로 스키마 개념이 �
 
 * Restful  
 데이터 CURD작업은 HTTP Restful API를 통해 수행하며, 각각 다음과 같이 대응
-|Data CRUD|Elasticsearch Restful|
-|---------|---------------------|
-|SELECT   |GET                  |
-|INSERT   |PUT                  |
-|UPDATE   |POST                 |
-|DELETE   |DELETE               |
 
-| Header One | Header Two | Header Three | Header Four | 
-| ---------- | :--------- | :----------: | ----------: | 
-| Default | Left | Center | Right |
+| Data CRUD | Elasticsearch Restful | 
+| --------- | --------------------- | 
+| SELECT    | GET                   | 
+| INSERT    | PUT                   | 
+| UPDATE    | POST                  | 
+| DELETE    | DELETE                | 
 
 출처: https://poorman.tistory.com/352 [poorman]
 
