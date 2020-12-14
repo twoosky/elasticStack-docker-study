@@ -97,7 +97,6 @@ Json 문서를 통해 데이터 검색을 수행하므로 스키마 개념이 �
 | UPDATE    | POST                  | 
 | DELETE    | DELETE                | 
 
-출처: https://poorman.tistory.com/352 [poorman]
 
     
     
