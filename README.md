@@ -1,10 +1,15 @@
-Elasticsearch란?
+Elasticsearch
 =================
-사용자가 서버나 데이터베이스로부터 원하는 데이터를 실시간으로 수집하고 검색, 분석하여 시각화 시키는 오픈소스 서비스이다.
-기존의 ELK Solution (Elastic Search + Logstash + Kibana)에 Beats가 추가되면서 Elastic Stack 이라는 이름으로 서비스를 제공한다.
+* 사용자가 서버나 데이터베이스로부터 원하는 데이터를 실시간으로 수집하고 검색, 분석하여 시각화 시키는 오픈소스 서비스이다.
+* Elastic Stack (Elastic Search + Logstash + Kibana + Filebeat)
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile5.uf.tistory.com%2Fimage%2F993B7E495C98CAA7064E0B" width="500px" height="300px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
 
-<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile5.uf.tistory.com%2Fimage%2F993B7E495C98CAA7064E0B" width="650px" height="400px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
-
+## Elastic search
+1. Full text search
+ * 역 인덱스(Inverted Index) 구조로 데이터 저장
+   * 추출된 각 키워드를 텀(term)이라고 부르며, term을 포함하는 도큐먼트들의 id를 바로 얻을 수 있음.
+   * 역 인덱스가 가리키는 id의 배열값이 추가되는 것이므로 검색 속도 향상
+     * 관계형 DB에서는 Text열을 한 줄씩 내려가면서 row 안의 내용을 모두 읽어 키워드를 찾아야 하므로 속도 저하
 * Logstash  
   * 다양한 소스(DB, csv파일 등)의 로그 또는 트랜잭션 데이터를 수집, 집계, 파싱하여 Elasticsearch로 전달
   <img src="https://t1.daumcdn.net/cfile/tistory/999F343A5C51BB3018" width="400px" height="120px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
