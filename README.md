@@ -12,7 +12,8 @@ Elasticsearch
    * 역 인덱스가 가리키는 id의 배열값이 추가되는 것이므로 검색 속도 향상
    
      * 관계형 DB에서는 Text열을 한 줄씩 내려가면서 row 안의 내용을 모두 읽어 키워드를 찾아야 하므로 속도 저하
-   <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LntL_BGpuFbNXy_sFtK%2F-LntLbibpXHABupWvXtu%2F6.1-03.png?alt=media&token=d2726f20-a7ea-4219-bcb0-340cbe1d21f1" width="400px" height="120px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+   
+   <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LntL_BGpuFbNXy_sFtK%2F-LntLbibpXHABupWvXtu%2F6.1-03.png?alt=media&token=d2726f20-a7ea-4219-bcb0-340cbe1d21f1" width="500px" height="180px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
    
  * 텍스트 분석 (Text Analysis)
    
@@ -82,20 +83,20 @@ Elasticsearch
           
           1. 3개의 서버에서 각 1개의 노드를 실행
           
-            <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnEXJ5Avdp4mVjPeH2b%2Fimage.png?alt=media&token=447df06c-a4d5-4330-81cb-2e71804db02a" width="100px" height="250px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+           <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnEXJ5Avdp4mVjPeH2b%2Fimage.png?alt=media&token=447df06c-a4d5-4330-81cb-2e71804db02a" width="200px" height="350px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
             
           2. 한 서버에서 2개의 노드 실행, 다른 서버에서 1개의 노드 실행
           
-             <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnEXWfNEyRQtfSEdK7v%2Fimage.png?alt=media&token=50451080-1637-4b44-a687-6de356a67115" width="100px" height="250px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+             <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnEXWfNEyRQtfSEdK7v%2Fimage.png?alt=media&token=50451080-1637-4b44-a687-6de356a67115" width="200px" height="350px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
              
           3. 하나의 서버에서 서로 다른 2개의 클러스터 실행
           
-            <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnFBFFyMu6dOc9_OQ1s%2Fimage.png?alt=media&token=88af6fac-8297-4c79-a3e1-3f8779214559" width="100px" height="250px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+           <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnFBFFyMu6dOc9_OQ1s%2Fimage.png?alt=media&token=88af6fac-8297-4c79-a3e1-3f8779214559" width="200px" height="350px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
             
-              * node-1과 node-2는 하나의 클러스터로 묶여있으므로 데이터 교환 가능
-              * node-3은 클러스터가 다르므로 나머지 노드들과 데이터 교환 불가능
-              * node-2는 node-1이 마스터로 있는 클러스터 es-cluster-2에 묶인 것
-              * node-3는 자신이 es-cluster-2 클러스터의 마스터 노드
+           * node-1과 node-2는 하나의 클러스터로 묶여있으므로 데이터 교환 가능
+           * node-3은 클러스터가 다르므로 나머지 노드들과 데이터 교환 불가능
+           * node-2는 node-1이 마스터로 있는 클러스터 es-cluster-2에 묶인 것
+           * node-3는 자신이 es-cluster-2 클러스터의 마스터 노드
       
       * 디스커버리 (Discovery)
       
@@ -111,7 +112,7 @@ Elasticsearch
                   
               2. 주소가 끝날 때까지 노드를 찾지 못한 경우 > 스스로 새로운 클러스터 시작
               
-                <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnVEF1ED-x6P43UYEm-%2F-LnKbiLZhJ4PDthfVOko%2Fimage.png?alt=media&token=989ba2aa-5129-43db-b746-6738b6a121c1" width="100px" height="250px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+               <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnVEF1ED-x6P43UYEm-%2F-LnKbiLZhJ4PDthfVOko%2Fimage.png?alt=media&token=989ba2aa-5129-43db-b746-6738b6a121c1" width="100px" height="250px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
                 
                 
 3. Node
@@ -222,7 +223,7 @@ Elasticsearch
     
  ## Logstash
 
-    * 다양한 소스(DB, csv파일 등)의 로그 또는 트랜잭션 데이터를 수집, 집계, 파싱하여 Elasticsearch로 전달
+  * 다양한 소스(DB, csv파일 등)의 로그 또는 트랜잭션 데이터를 수집, 집계, 파싱하여 Elasticsearch로 전달
   
     * input    
     
