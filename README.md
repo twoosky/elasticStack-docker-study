@@ -83,15 +83,15 @@ Elasticsearch
           
           1. 3개의 서버에서 각 1개의 노드를 실행
           
-           <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnEXJ5Avdp4mVjPeH2b%2Fimage.png?alt=media&token=447df06c-a4d5-4330-81cb-2e71804db02a" width="200px" height="350px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+           <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnEXJ5Avdp4mVjPeH2b%2Fimage.png?alt=media&token=447df06c-a4d5-4330-81cb-2e71804db02a" width="400px" height="350px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
             
           2. 한 서버에서 2개의 노드 실행, 다른 서버에서 1개의 노드 실행
           
-             <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnEXWfNEyRQtfSEdK7v%2Fimage.png?alt=media&token=50451080-1637-4b44-a687-6de356a67115" width="200px" height="350px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+             <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnEXWfNEyRQtfSEdK7v%2Fimage.png?alt=media&token=50451080-1637-4b44-a687-6de356a67115" width="400px" height="350px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
              
           3. 하나의 서버에서 서로 다른 2개의 클러스터 실행
           
-           <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnFBFFyMu6dOc9_OQ1s%2Fimage.png?alt=media&token=88af6fac-8297-4c79-a3e1-3f8779214559" width="200px" height="350px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+           <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUvu8iUqn07h_vY2sX%2F-LnFBFFyMu6dOc9_OQ1s%2Fimage.png?alt=media&token=88af6fac-8297-4c79-a3e1-3f8779214559" width="400px" height="350px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
             
            * node-1과 node-2는 하나의 클러스터로 묶여있으므로 데이터 교환 가능
            * node-3은 클러스터가 다르므로 나머지 노드들과 데이터 교환 불가능
@@ -112,7 +112,7 @@ Elasticsearch
                   
               2. 주소가 끝날 때까지 노드를 찾지 못한 경우 > 스스로 새로운 클러스터 시작
               
-               <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnVEF1ED-x6P43UYEm-%2F-LnKbiLZhJ4PDthfVOko%2Fimage.png?alt=media&token=989ba2aa-5129-43db-b746-6738b6a121c1" width="100px" height="250px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+               <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnVEF1ED-x6P43UYEm-%2F-LnKbiLZhJ4PDthfVOko%2Fimage.png?alt=media&token=989ba2aa-5129-43db-b746-6738b6a121c1" width="300px" height="400px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
                 
                 
 3. Node
@@ -168,7 +168,7 @@ Elasticsearch
           * 사용자 요청을 받아 처리하는 코디네이터 모드
           * 엘라스틱서치의 모든 노드는 기본적으로 코디네이션 모드 노드이다. 모든 노드가 사용자의 요청을 받아 처리할 수 있다.
           
-          <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUyizASxjZepqPV1G1%2F-LnKqZrQzuaRIRdn6sLK%2Fimage.png?alt=media&token=46d874f2-f582-4339-8d0f-aef794a3ae93" width="200px" height="100px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+          <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnUyizASxjZepqPV1G1%2F-LnKqZrQzuaRIRdn6sLK%2Fimage.png?alt=media&token=46d874f2-f582-4339-8d0f-aef794a3ae93" width="400px" height="200px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
           
           * node-1이 마스터 노드, 별 표시로 구분
           
