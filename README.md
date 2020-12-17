@@ -381,10 +381,10 @@ Elasticsearch
   * `GET <인덱스명>/_search` 형식으로 쿼리를 통한 검색 기능, 검색은 인덱스 단위로 이루어짐
   * 검색 시 쿼리를 넣지 않으면 해당 인덱스의 모든 도큐먼트 검색 match_all
   
- 1. URL 검색
+  3-1. URL 검색
     
-    * 요청 주소에 검색어를 넣어 검색하는 방식
-    * _search 뒤에 q 파라메터를 사용해 검색어 입력
+     * 요청 주소에 검색어를 넣어 검색하는 방식
+     * _search 뒤에 q 파라메터를 사용해 검색어 입력
     
       `GET <인덱스>/_search?q=<검색어>` 
     
@@ -392,12 +392,12 @@ Elasticsearch
        * AND, OR, NOT 사용 가능
        * 검색어를 특정 필드에서 찾고 싶으면 `q=<필드명>:<검색어> 형태로 입력
        
-  2. 멀티테넌시(Multitenancy)
+  3-2. 멀티테넌시(Multitenancy)
    
      * 여러 개의 인덱스를 한꺼번에 묶어서 검색할 수 있는 멀티테넌시
      `GET logs*/_search`
        
-  3. QueryDSL
+  3-3. QueryDSL
    
      * 풀 텍스트 쿼리 (Full Text Query)
      
