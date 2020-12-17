@@ -381,7 +381,7 @@ Elasticsearch
   * `GET <인덱스명>/_search` 형식으로 쿼리를 통한 검색 기능, 검색은 인덱스 단위로 이루어짐
   * 검색 시 쿼리를 넣지 않으면 해당 인덱스의 모든 도큐먼트 검색 match_all
   
-  3-1. URL 검색
+  1. URL 검색
     
      * 요청 주소에 검색어를 넣어 검색하는 방식
      * _search 뒤에 q 파라메터를 사용해 검색어 입력
@@ -392,12 +392,12 @@ Elasticsearch
        * AND, OR, NOT 사용 가능
        * 검색어를 특정 필드에서 찾고 싶으면 `q=<필드명>:<검색어> 형태로 입력
        
-  3-2. 멀티테넌시(Multitenancy)
+  2. 멀티테넌시(Multitenancy)
    
      * 여러 개의 인덱스를 한꺼번에 묶어서 검색할 수 있는 멀티테넌시
      `GET logs*/_search`
        
-  3-3. QueryDSL
+  3. QueryDSL
    
      * 풀 텍스트 쿼리 (Full Text Query)
      
@@ -526,6 +526,33 @@ Elasticsearch
           * gt (Greater-than) – 초과 (큼)
           * lte (Less-than or equal to) - 이하 (같거나 작음)
           * lt (Less-than) - 미만 (작음)
+          
+      
+## 데이터 색인과 텍스트 분석
+
+1. _analyze API
+
+   * Elasticsearch에서는 분석된 문장을 _analyze API를 이용해 확인할 수 있다.
+   * 토크나이저는 tokenizer, 토큰 필터는 filter 항목의 값으로 입력
+   
+    ```
+    GET _analyze
+    {
+      "text": "The quick brown fox jumps over the lazy dog",
+      "tokenizer": "whitespace",
+      "filter": [
+        "lowercase",
+        "stop",
+        "snowball"
+      ]
+    }
+   ```
+  
+     * stop 토큰 필터를 lowercase보다 먼저 놓게 되면 stop 토큰 필터 처리시 대문자로 시작하는 "The"는 불용어로 간주되지 않아 그냥 남게 됨. 그 후에 lowercase가 적용되어 소문자 "the"가 최종 검색 텀으로 역 색인에 남아있게 됨   
+     
+     
+   
+     
          
             
             
