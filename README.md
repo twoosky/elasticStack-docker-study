@@ -905,9 +905,9 @@ Elasticsearch
               ...
        ```
        
-    * ex) message필드에 message.english, message.nori 멀티 필드 정의. 총 3개의 역 색인 생성
+   * ex) message필드에 message.english, message.nori 멀티 필드 정의. 총 3개의 역 색인 생성
       
-      * `{ "message": "My favorite 슈퍼영웅 is Iron Man" }' 입력
+     * `{ "message": "My favorite 슈퍼영웅 is Iron Man" }' 입력
       
        <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-Lpef-ryjC_001Cv0nvu%2F-LpejgfvBL7HA0r72rd-%2F07-14.png?alt=media&token=c2b5f2b3-a4f9-4c54-8719-d0b4bc3ba90e" width="400px" height="200px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
        
