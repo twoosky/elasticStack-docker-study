@@ -530,10 +530,14 @@ Elasticsearch
       
 ## 데이터 색인과 텍스트 분석
 
+### 애널라이저 (Analyzer)
+
 1. _analyze API
 
    * Elasticsearch에서는 분석된 문장을 _analyze API를 이용해 확인할 수 있다.
    * 토크나이저는 tokenizer, 토큰 필터는 filter 항목의 값으로 입력
+   * 캐릭터 필터, 토크나이저, 토큰 필터들을 조합해서 사용자 정의 애널라이저 만들 수 있다.
+   
    
     ```
     GET _analyze
@@ -548,9 +552,385 @@ Elasticsearch
     }
    ```
   
-     * stop 토큰 필터를 lowercase보다 먼저 놓게 되면 stop 토큰 필터 처리시 대문자로 시작하는 "The"는 불용어로 간주되지 않아 그냥 남게 됨. 그 후에 lowercase가 적용되어 소문자 "the"가 최종 검색 텀으로 역 색인에 남아있게 됨   
+    * stop 토큰 필터를 lowercase보다 먼저 놓게 되면 stop 토큰 필터 처리시 대문자로 시작하는 "The"는 불용어로 간주되지 않아 그냥 남게 됨. 그 후에 lowercase가 적용되어 소문자 "the"가 최종 검색 텀으로 역 색인에 남아있게 됨 
+    
+    * `snowball` 애널라이저
+      
+      * `lowercase`, `stop`, `snowball` 토큰필터들을 조합한 애널라이저
+      
+      * 인덱스 매핑(mappings)설정에 `snowball` 애널라이저를 적용
+      
+        ```
+        PUT <인덱스>
+        {
+          "mappings": {
+            "properties": {
+              "<필드명>": {
+                "type": "text",
+                "analyzer": "snowball"
+               }
+            ...
+         ```
+      
+          * 필드에 입력된 문장 내 단어들이 가공되어 검색 텀으로 저장되고, 입력한 검색어 또한 토큰 필터 등이 적용되어 기본 형태로 바꾸어 검색한다
+            * ex) jumps, jumping 입력 -> jump로 바꾸어 검색
+            
+ 
+2. Term 쿼리
+
+   * 입력한 검색어는 애널라이저를 적용하지 않고 입력된 검색어 그대로 일치하는 텀을 찾는다.
+       * ex) jumps, jumping으로 검색하면 결과가 나타나지 않고 jump로 검색해야 결과가 나타남.
+       
+3. 사용자 정의 애널라이저 (Custom Analyzer)
+
+   * 토크나이저, 토큰필터 등을 조합하여 만든 애널라이저
+   * `"index" : { "analysis" :` 부분에 정의
+   * 생성한 후 `GET<인덱스명>/_analyze` 또는 `POST <인덱스명>/_analyze` 명령으로 사용 가능
+         
+   * 인덱스의 settings 안에 my_custom_analyzer 생성
+   
+    ```
+    PUT <인덱스>
+    {
+     "settings" : {
+       "index": {
+         "analysis": {
+           "analyzer": {
+             "my_custom_analyzer": {
+               "type": "custom",
+               "tokenizer": "whitespace",
+               "filter": [
+                 "lowercase",
+                 "stop",
+                 "snowball"
+               ]
+             }
+         ...
+    ```
+  
+    * 옵션을 지정하는 경우 사용자 정의 토크나이저, 토큰필터로 만들어 추가해야 함.
+      
+      * ex) stop 토큰필터에 "brown"을 불용어로 적용한 사용자 정의 토큰필터를 생성하고 이를 사용자 정의 토크나이저에서 사용하도록 함.
+      
+        ```
+        ... 위 코드와 동일
+        
+          "filter" [
+            "lowercase",
+            "my_stop_filter",
+            "snowball"
+          ]
+         }
+        },
+        "filter": {
+          "my_stop_filter": {
+            "type": "stop"
+            "stopwords": [
+              "brown"
+            ]
+          }
+        ...
+        ```
+        
+    * 인덱스에 mapping하는 방법은 위의 'snowball' 애널라이저 인덱스 매핑과 동일
+    
+4. 텀 벡터 (_termvectors API)
+  
+    * 역 인덱스의 내용 확인할 때  `GET <인덱스>/_termvectors/<도큐먼트id>?fields=<필드명>` 형식으로 사용
+    * 여러개의 필드 확인하고 싶은 경우 `?fields=field1,field2` 와 같이 쉼표로 나열
+    
+### 캐릭터 필터 (Character Filter)
+  
+   * 색인된 텍스트가 토크나이저에 의해 텀으로 분리되기 전에 전체 문장에 대해 적용되는 일종의 전처리 도구
+  
+1. HTML Strip
+ 
+   * 입력된 텍스트가 HTML인 경우 HTML 태그들을 제거하여 일반 텍스트로 만듦
+   * <>로 된 태그 제거 및 &nbsp; 같은 HTML 문법 용어들도 해석
+   
+     ```
+     POST _analyze
+     {
+       "tokenizer": keyword",
+       "char_filter": [
+         "html_strip"
+       ],
+       "text": <HTML 텍스트>
+     }
+     ```
+     
+2. Mapping
+
+   * 지정한 단어를 다른 단어로 치환 가능
+   * 특수문자 등을 포함하는 검색 기능을 구현하는 경우 반드시 적용
+     
+     * ex) 필드에 java, c, c++인 도큐먼트들이 있는 인덱스에서 c++을 검색하면 c, c++ 도큐먼트가 결과로 나타남  
+       standard 애널라이저가 적용되어 특수문자를 불용어로 간주해 제거하기 때문에 발생하는 현상  
+       따라서 특수문자 +를 _plus_ 로 치환해서 색인하면 c++ 검색 시 c++ 도큐먼트만 결과로 나타남
+       
+       ```
+       ...
+       "char_filter": {
+         "cpp_char_filter": {
+           "type": "mapping",
+           "mappings": [ "+ => _plus_", "- => _minus_" ]
+         }
+       }
+       ...
+       ```
+       
+3. Pattern Replace
+
+   * 정규식(Regular Expression)을 이용해서 좀 더 복잡한 패턴들을 치환할 수 있는 캐릭터 필터
+     * ex) 카멜 표기법(camelCase)으로 된 FooBazBar 단어를 대문자가 시작하는 단위마다 공백을 삽입하여 토크나이징 될 수 있도록 만듦. Foo, Baz, Bar 단어로 분리
+     
+### 토크나이저 (Tokenizer)
+
+1. Standard
+  
+   * 공백으로 텀을 구분하면서 특수문자 제거
+   * 단어 끝에 있는 특수문자는 제거되지만, 3.5처럼 중간에 있는 마침표나 밑줄 등은 제거되거나 분리되지 않는다.
+   
+2. Letter
+
+   * 알파벳을 제외한 모든 공백, 숫자, 기호들을 기준으로 텀을 분리
+   * 단어 중간에 있는 특수문자도 모두 제거 및 분리
+   
+3. Whitespace
+
+   * 스페이스, 탭, 줄바꿈 같은 공백만을 기준으로 텀 분리
+   
+4. UAX URL Email
+
+   * 이메일 주소 또는 웹 URL 경로 등이 삽입되어 있는 경우 Standard 토크나이저를 사용하면 정상적으로 인식되지 않아 문제 발생 이를 방지하기 위해 사용
+   * 이메일 주소와 웹 url은 분리하지 않고 하나의 텀으로 저장
+   
+5. Pattern
+
+   * 특수한 구분자로 사용하여 텀을 분리할 경우 사용
+   * 정규식으로도 설정 가능
+   
+6. Path Hierarchy
+   
+   * 디렉토리나 파일 경로를 텀으로 저장할 때 사용
+   * 경로 데이터 path를 계층별로 저장해서 하위 디렉토리에 속한 도큐먼트들을 수준별로 검색하거나 집계하는 것이 가능
+   * `delimiter` : 경로 구분자 설정 (디폴트는 '/')
+   * `replacement` : 소스의 구분자를 다른 구분자로 대치해서 저장
+   
+### 토큰 필터 (Token Filter)
+   
+   * 분리된 각각의 텀들을 지정한 규칙에 따라 처리
+   * `filter`항목에 배열 값으로 나열해서 지정, 순서 중요
+   
+1. Lowercase / Uppercase
+
+   * Lowercase : 모든 텀을 소문자로 변경
+   * Uppercase : 모든 텀을 대문자로 변경
+   
+2. Stop
+
+   * 불용어에 해당되는 텀 제거 (the, is, a)
+   * `stopwords` 항목에 불용어로 지정할 단어들을 배열 형태로 나열해 특정 단어를 불용어를 지정할 수 있음
+   * `stopwords_path` 항목에 불용어를 저장한 .txt 파일의 경로를 지정하여 사용 가능
+     
+     * 파일 내 불용어는 줄바꿈으로 입력해야 하고, elasticsearch의 config 디렉토리를 기준으로 상대경로를 지정해야 하며 UTF-8로 되어 있어야됨. 
+     
+   * 기존의 사전 파일의 내용이 변경된 경우 인덱스를 새로 고침 해주어야 토큰 필터가 새로 적용됨.
+   
+     * POST <인덱스명>/_close
+     * POST <인덱스명>/_open
+     
+ 3. Synonym
+ 
+    * 텀(term)의 동의어 저장 가능
+    * `synonyms` 항목에서 직접 동의어 목록을 입력하거나, `synonyms_path`로 지정하는 방법이 있음
+    
+    * "A, B => C" : 왼쪽의 A, B 대신 오른쪽의 C 텀을 저장, A,B로는 C의 검색이 가능하지만, C로는 A,B 검색 불가능
+    * "A,B" : A, B 각 텀이 A와 B 두개의 텀을 모두 저장. A와 B 모두 서로의 검색어로 검색 가능
+    
+    * synonym 옵션
+    
+      * expand (true / false. 디폴트는 true)
+       
+         * `"expand": false` 로 설정하게 되면 `"synonyms": "aws, amazon"` 같은 설정에 토큰들을 모두 저장하지 않고 맨 처음에 명시된 토큰 하나만 저장한다. `"synonyms": "aws, amazon => aws"` 로 설정한 것과 동일하게 동작
+         
+      * lenient (true / false. 디폴트는 false)
+      
+        * `"lenient": true` 로 설정하면 synonym 설정에 오류가 있는 경우 오류가 있는 부분을 무시하고 실행
+        
+4. NGram
+
+   * 단어의 일부만 가지고 검색하는 경우를 대비해 단어의 일부를 나눠 텀으로 저장함
+     * ex) house에 Ngram적용 : ho, ou, us, se 로 분리해 텀 저장
+   * `min_gram`(디폴트 1), `max_gram`(디폴트 2) : 최소, 최대 문자수의 토큰을 구분하는 단위
+   
+5. Edge NGram
+
+   * 단어의 맨 앞에서부터 검색하는 경우가 많으므로 텀 앞쪽의 ngram만 저장하기 위해 사용
+   * 설정 방법 : `"type": "edgeNGram"
+     * ex) house : h, ho, hou, hous
+     
+6. Shingle
+
+   * 문자가 아니라 단어 단위로 구성된 묶음을 분리해 텀으로 저장
+   * 설정 방법 : `"type": "shingle"`
+     * ex) this is my sweet home : this is, is my, my sweet, sweet home
+   
+   * shingle 토큰 필터 옵션
+     
+     * min_shingle_size / max_shingle_size : shingle의 최소 / 최대 단어 개수를 지정합니다. 디폴트는 모두 2 입니다.
+     * output_unigrams : Shingle 외에도 각각의 개별 토큰(unigram)도 저장 하는지의 여부를 설정합니다. 디폴트는 true 입니다.
+     * output_unigrams_if_no_shingles : shingle 을 만들 수 없는 경우에만 개별 토큰을 저장하는지의 여부를 설정합니다. 디폴트는 false 입니다.
+     * token_separator : 토큰 구분자를 지정합니다. 디폴트는 " " (스페이스) 입니다.
+     * filler_token : shing을 만들 텀이 없는 경우 (보통은 stop 토큰 필터와 함께 사용되어 offset 위치만 있고 텀이 없는 경우입니다) 대체할 텍스트를 지정합니다. 디폴트는 _ 입니다.
+     
+7. Unique
+
+   * 중복되는 텀들은 하나만 저장하도록 한다.
+   
+### 형태소 분석 (Stemming)
+
+   * 문법에 따른 단어의 변형에 상관없이 기본형태인 어간을 추출하는 과정
+ 
+1. Snowball
+   * ~ing, ~s 등을 제거하여 기본 형태로 변경
+   
+2. 노리(nori) 한글 형태소 분석기
+
+   * nori_tokenizer 옵션
+   
+     * user_dictionary : 사용자 사전이 저장된 파일의 경로를 입력.
+     * user_dictionary_rules : 사용자 정의 사전을 배열로 입력. 우선순위 입력
+     * decompound_mode : 합성어의 저장 방식을 결정합니다. 다음 3개의 값을 사용 가능.
+       
+       * none : 어근을 분리하지 않고 완성된 합성어만 저장.
+       * discard (디폴트) : 합성어를 분리하여 각 어근만 저장.
+       * mixed : 어근과 합성어를 모두 저장.
+       
+    * nori_part_of_speech
+      
+      * 제거할 품사 정보의 지정 가능
+      * 옵션 stoptags값에 배열로 제외할 품사 코드를 나열해 입력해서 사용
+           
+       <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LoinpqY1xA7ock1sc6i%2F-Loioly2sAhomKoXMv2-%2F6.7.2-02.png?alt=media&token=47fae11e-c38e-4dff-92e8-64515e37f565" width="400px" height="200px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+       
+       
+    * nori_readingform
+      
+      * 한자로 된 단어를 한글로 바꾸어 저장
+      
+    * explain : true 옵션
+    
+      * 분석된 한글 형태소들의 품사 정보를 같이 볼 수 있음
+      
+
+## 인덱스 설정과 매핑
+
+### 설정 (Settings)
+
+  * 모든 인덱스는 settings과 mappings 두 개의 정보 단위를 가짐. `GET <인덱스명>`으로 조회 가능
+  
+  * number_of_shards / number_of_replicas : 프라이머리 샤드 수와 리플리카 수 설정
+     
+     * number_of_shards는 인덱스를 처음 생성할 때 한번 지정하면 바꿀 수 없음
+     * number_of_replicas는 다이나믹하게 변경 가능, _settings API로 접근해 설정 변경
+     
+  * refresh_interval
+  
+     * Elasticsearch에서 세그먼트가 만들어지는 리프레시 타임을 설정하는 값 (기본 : 1초)
+     * 설정 변경 다이나믹하게 가능
+     
+  * analyzer, tokenizer, filter
+   
+     * 애널라이저, 토크나이저, 토큰 필터 setting 내부에 정의
+     * `"analysis": { }` 내부에 `"analyzer": { }, "char_filter":{ }, "tokenizer": { }, "filter": { }`를 입력하고 각자으 ㅣ내부에서 임의의 이름을 주어 각 기능들을 정의
+     * `"analysis": { }` 내용은 한번 생성 후 변경 불가능
+    
+    
+ ### 매핑 (Mappings)
+  
+ 1. 동적(Dynaminc) 매핑
+ 
+   * 인덱스에 도큐먼트를 새로 추가하면 자동으로 매핑 생성
+   * 인덱스의 매핑에서 필드들은 mappings 아래 properties 항목의 아래 지정
+   * 매핑이 동적으로 생성 될 때는 필드의 값을 보고 타입 예상
+   
+2. 매핑 정의
+
+    * 데이터가 입력되어 자동으로 매핑이 생성되기 전에 미리 인덱스의 매핑을 정의
+    * 이미 만들어진 매핑에 필드를 추가하는 것은 가능하지만, 이미 만들어진 필드를 삭제하거나 필드의 타입 및 설정값 변경 불가능
+      * 필드의 변경이 필요한 경우 인덱스를 새로 정의해 기존 인덱스 값을 새 인덱스에 모두 재색인 해야함.
+
+    ```
+    PUT <인덱스명> 
+    {
+      "mappings" : {
+        "properties" : {
+          "<필드명>" : {
+            "type" : "<필드 타입>"
+              ...<필드 설정>
+          }
+       ...
+     ```
+     
+     * 이미 생성된 인덱스에 새로운 필드를 추가 하는 경우
+     
+      ```
+     PUT <인덱스명>/_mapping 
+     {
+        "properties" : {
+          "<추가할 필드명>" : {
+            "type" : "<필드 타입>"
+              ...<필드 설정>
+          }
+       ...
+     ```
+     
+3. 멀티(다중)필드 (Multi Field)
+
+   * 도큐먼트에는 하나의 필드값만 있지만, 이 필드의 값을 여러 개의 역 색인 및 doc_values들로 저장할 수 있는 다중 필드 
+   * 매핑에서 필드명 아래 `"fields" : { }` 항모에서 다시 새로운 필드를 정의하고 설정
+   * 보통은 text 타입 아래 keyword 타입을 같이 정의하기 위해 사용
+   * 하나의 텍스트 필드에 여러 개의 애널라이저를 적용하기 위해서도 사용 (ex. 다국어로 싀여진 도큐먼트 분석)
+   
+      ```
+      PUT <인덱스명>
+      {
+        "mappings": {
+          "properties": {
+            "<필드명1>": {
+              "type": "<필드 타입1>"
+                "<필드명2>": {
+                  "type": "<필드 타입2>"
+              ...
+       ```
+       
+    * ex) message필드에 message.english, message.nori 멀티 필드 정의. 총 3개의 역 색인 생성
+      
+      * `{ "message": "My favorite 슈퍼영웅 is Iron Man" }' 입력
+      
+       <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-Lpef-ryjC_001Cv0nvu%2F-LpejgfvBL7HA0r72rd-%2F07-14.png?alt=media&token=c2b5f2b3-a4f9-4c54-8719-d0b4bc3ba90e" width="400px" height="200px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+       
+       
+      
+    
+    
+      
+    
+     
+
      
      
+     
+  
+ 
+      
+    
+
+        
+  
+  
+                 
    
      
          
