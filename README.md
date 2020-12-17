@@ -290,36 +290,36 @@ Elasticsearch
   
  1. REST API
  
-  * http 프로토콜로 접근 가능
+   * http 프로토콜로 접근 가능
   
-  * 고유 URL로 접근이 가능하며 http 메서드 PUT, POST, GET, DELETE를 이용해서 자원 처리
+   * 고유 URL로 접근이 가능하며 http 메서드 PUT, POST, GET, DELETE를 이용해서 자원 처리
   
-    * RESTFul한 시스템
+     * RESTFul한 시스템
     
-  * curl 명령어, Kibana Dev Tools로 사용 가능
+   * curl 명령어, Kibana Dev Tools로 사용 가능
   
-  * RESTFul한 시스템에서의 데이터 처리
+   * RESTFul한 시스템에서의 데이터 처리
   
-    * 입력 : 'PUT http://user.com/kim -d {"name":"kim", "age":38, "gender":"m"}'
-    * 조회 : 'GET http://user.com/kim'
-    * 삭제 : 'DELETE http://user.com/kim'
+     * 입력 : `PUT http://user.com/kim -d {"name":"kim", "age":38, "gender":"m"}`
+     * 조회 : `GET http://user.com/kim`
+     * 삭제 : `DELETE http://user.com/kim`
     
-  * CRUD - 입력, 조회, 수정, 삭제
+   * CRUD - 입력, 조회, 수정, 삭제
     
-    * curl 명령어로 도큐먼트에 접근하는 URL
+     * curl 명령어로 도큐먼트에 접근하는 URL
     
-      'http://<호스트>:<포트>/<인덱스>/_doc/<도큐먼트 id>'
+       `http://<호스트>:<포트>/<인덱스>/_doc/<도큐먼트 id>`
       
-    * 입력 (PUT)
+     * 입력 (PUT)
       
-    'PUT my_index/_doc/1'
+     `PUT my_index/_doc/1`
       
-      * 처음으로 도큐먼트를 입력하면 결과에 '"result" : "created"'로 표시됨.
-      * 동일한 URL에 다른 내용의 도큐먼트를 다시 입력하게 되면 새로운 도큐먼트로 덮어씌워짐 이 때 result에 updated로 표시됨.
+       * 처음으로 도큐먼트를 입력하면 결과에 '"result" : "created"'로 표시됨.
+       * 동일한 URL에 다른 내용의 도큐먼트를 다시 입력하게 되면 새로운 도큐먼트로 덮어씌워짐 이 때 result에 updated로 표시됨.
       
-    'PUT my_index/_create/1'
+     `PUT my_index/_create/1`
     
-      * 기존 도큐먼트가 덮어씌워지는 것을 방지하기 위해 _doc 대신 _create로 새 도큐먼트 입력 
+       * 기존 도큐먼트가 덮어씌워지는 것을 방지하기 위해 _doc 대신 _create로 새 도큐먼트 입력 
     
   
   
