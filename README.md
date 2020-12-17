@@ -291,11 +291,8 @@ Elasticsearch
  1. REST API
  
    * http 프로토콜로 접근 가능
-  
-   * 고유 URL로 접근이 가능하며 http 메서드 PUT, POST, GET, DELETE를 이용해서 자원 처리
-  
-     * RESTFul한 시스템
-    
+   * 고유 URL로 접근이 가능하며 http 메서드 PUT, POST, GET, DELETE를 이용해서 자원 처리  
+     * RESTFul한 시스템    
    * curl 명령어, Kibana Dev Tools로 사용 가능
   
    * RESTFul한 시스템에서의 데이터 처리
@@ -312,14 +309,249 @@ Elasticsearch
       
      * 입력 (PUT)
       
-     `PUT my_index/_doc/1`
+       `PUT <인덱스>/_doc/<도큐먼트 id>`
       
-       * 처음으로 도큐먼트를 입력하면 결과에 '"result" : "created"'로 표시됨.
-       * 동일한 URL에 다른 내용의 도큐먼트를 다시 입력하게 되면 새로운 도큐먼트로 덮어씌워짐 이 때 result에 updated로 표시됨.
+        * 처음으로 도큐먼트를 입력하면 결과에 '"result" : "created"'로 표시됨.
+        * 동일한 URL에 다른 내용의 도큐먼트를 다시 입력하게 되면 새로운 도큐먼트로 덮어씌워짐 이 때 result에 updated로 표시됨.
       
-     `PUT my_index/_create/1`
+       `PUT <인덱스>/_create/<도큐먼트 id>`
     
-       * 기존 도큐먼트가 덮어씌워지는 것을 방지하기 위해 _doc 대신 _create로 새 도큐먼트 입력 
+        * 기존 도큐먼트가 덮어씌워지는 것을 방지하기 위해 _doc 대신 _create로 새 도큐먼트 입력 
+        * 이 때, 입력하려는 도큐먼트 id에 이미 데이터가 있는 경우 오류 발생
+        
+     * 조회 (GET)
+     
+       `GET <인덱스>/_doc/<도큐먼트 id>`
+       
+         * 문서의 내용이 _source 항목에 나타남 
+         * 삭제되거나 입력되지 않은 도큐먼트를 GET하면 '"found" : false' 리턴
+         * 삭제되거나 없는 인덱스의 도큐먼트를 GET하면 '"type" : "index_not_found_exception" , "status" : 404' 리턴
+        
+     * 삭제 (DELETE)
+     
+       `DELETE <인덱스>/_doc/<도큐먼트 id>`
+       
+         * my_index/_doc/1 도큐먼트 삭제, '"result" : "deleted"' 리턴
+         
+       `DELETE <인덱스>`
+       
+         * my_index 인덱스 전체 삭제
+         * '"acknowledged" : true'  리턴
+
+     * 수정 (POST)
+     
+       `POST <인덱스>/_doc`
+       
+         * PUT 메서드와 유사하게 데이터 입력에 사용 가능
+         * <인덱스>/_doc까지만 입력하면 자동으로 임의의 도큐먼트 id 생성
+       
+       ```
+       POST <인덱스>/_update/<도큐먼트 id>
+       {
+         "doc": {
+           "필드 : 업데이트 내용"
+         }
+       }
+       ```
+       
+         * 원하는 필드의 내용만 업데이트 가능
+         * 업데이트 할 내용에 "doc" 지정자 사용
+         
+2. _bulk API
+
+  * 여러 명령을 배치로 수행하기 위해 사용
+  
+  <img src="https://gblobscdn.gitbook.com/assets%2F-Ln04DaYZaDjdiR_ZsKo%2F-LnV0-25VfpscKAFEGLU%2F-LnV09PT6f3bcI4XKuga%2F4.3-01.png?alt=media&token=2df3f2e8-19a4-48a3-a480-d2bc99e2bdce" width="400px" height="200px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+  
+  * 동일한 인덱스에서 수행되는 경우 `<인덱스명>/_bulk` 형식으로도 사용가능
+  
+    ```
+    POST test/_bulk
+    {"index" :{"_id":"1"}}
+    {"filed":"value one"}
+    ```
+    
+  * 파일에 저장 내용 실행
+  
+    * 벌크 명령을 파일로 저장하고 curl 명령으로 실행가능
+    * 위의 내용을 bulk.json이라는 이름으로 파일 저장 후, `--data-binary`로 지정하면 저장된 파일로부터 입력할 명령과 데이터를 읽어올 수 있다.
+    
+3. 검색 API (_search API)
+
+  * `GET <인덱스명>/_search` 형식으로 쿼리를 통한 검색 기능, 검색은 인덱스 단위로 이루어짐
+  * 검색 시 쿼리를 넣지 않으면 해당 인덱스의 모든 도큐먼트 검색 match_all
+  
+ 1. URL 검색
+    
+    * 요청 주소에 검색어를 넣어 검색하는 방식
+    * _search 뒤에 q 파라메터를 사용해 검색어 입력
+    
+      `GET <인덱스>/_search?q=<검색어>` 
+    
+       * `hits.total.value` 에 검색 결과 전체에 해당하는 문서의 개수 표시되고 `hits:[]` 구문 안에 배열로 가장 정확도가 높은 문서 10개 나타남
+       * AND, OR, NOT 사용 가능
+       * 검색어를 특정 필드에서 찾고 싶으면 `q=<필드명>:<검색어> 형태로 입력
+       
+  2. 멀티테넌시(Multitenancy)
+   
+     * 여러 개의 인덱스를 한꺼번에 묶어서 검색할 수 있는 멀티테넌시
+     `GET logs*/_search`
+       
+  3. QueryDSL
+   
+     * 풀 텍스트 쿼리 (Full Text Query)
+     
+       * match
+         
+         * match 쿼리를 이용하여 해당 인덱스의 해당 필드에 검색어가 포함되어 있는 모든 문서 검색
+         * 여러 개의 검색어를 집어넣으면 OR 조건으로 검색이 되어 입력된 검색어 중 하나라도 포함된 모든 문서 검색
+          ```
+          GET <인덱스>/_search
+          {
+            "query": {
+               "match": {
+                  <필드명>:<검색어>
+               }
+          ...
+          ```
+          
+          * 검색 조건을 AND로 바꾸려면 `<필드명>: {"query":<검색어>, "operator": }` 로 입력
+         
+       *  match_phrase
+       
+          * 구문을 검색하는 쿼리 
+           
+           ```
+           GET <인덱스>/_search
+          {
+            "query": {
+               "match_phrase": {
+                  <필드명>:<검색어>
+               }
+          ...
+           ```
+          
+           * `slop` 옵션을 통해 slop에 지정된 값만큼 단어 사이에 다른 검색어가 끼어드는 것을 허용할 수 있음
+          
+             `<필드명>: {"query":<검색어>, "slop": }`
+          
+       * query_string
+       
+         * URL검색에 사용하는 검색 문법을 본문 검색에 이용하고 싶을 때 사용
+         
+          ```
+          GET <인덱스>/_search
+          {
+            "query": {
+               "query_string": {
+                  "default_filed": <필드명>,
+                  "query": "(jumping AND lazy) OR |"quick dog|""
+               }
+          ...
+           ```
+         
+     * Bool 복합 쿼리
+     
+       * 여러 쿼리를 조합하기 위해서 사용, 정확도를 위해 필요
+         
+         * must : 쿼리가 참인 도큐먼트들을 검색
+         * must_not : 쿼리가 거짓인 도큐먼트들을 검색
+         * should : 검색 결과 중 이 쿼리에 해당하는 도큐먼트의 점수를 높임
+         * filter : 쿼리가 참인 도큐먼트를 검색하지만 스코어를 계산하지 않는다. must보다 검색 속도가 빠르고 캐싱이 가능하다
+         
+          ```
+           GET <인덱스>/_search
+          {
+            "query": {
+               "bool": {
+                 "must": [
+                  { <쿼리> }, ...
+                 ],
+                 ...
+               }
+          ...
+           ```
+           
+     * 정확도 (Relevancy)
+     
+       * 검색 결과가 입력된 검색 조건과 얼마나 정확하게 일치하는 지
+       
+       * 스코어 점수
+       
+         * 검색 결과의 `_score` 항목에 높은 스코어 점수부터 나타남
+         * BM25 알고리즘 이용
+       
+       * TF (Term Frequency)
+       
+         * 도큐먼트 내에 검색된 텀(term)을 많이 포함할수록 점수가 높아지는 것
+         
+       * IDF (Inverse Document Frequency)
+       
+         * 전체 인덱스에 검색한 텀을 포함하고 있는 도큐먼트 개수가 많을수록 그 텀의 자신의 점수가 감소하는 것 
+         
+            * ex) 전체 인덱스 내 quick이 들어간 문서는 3개, dog가 들어간 문서는 4개가 있다면, quick이 들어가 있는 결과가 점수가 높음
+            
+       * Field Length
+         
+         * 도큐먼트에서 필드 길이가 큰 필드보다는 짧은 필드에 있는 텀의 비중이 더 크다.
+         
+            * ex) 검색어가 제목과 내용 필드에 모두 있는 경우 텍스트 길이가 짧은 제목 필드에 텀이 들어있는 점수가 더 크다.
+            
+       * Bool : Should
+       
+         * 검색어 중 특정 검색어가 포함된 결과에 가중치를 줘서 상위로 올리고 싶은 경우 사용
+            * match도 스코어 점수는 계산되지만, should는 기본 match 스코어 점수에 가중치를 줌 
+         * match_phrase와 함께 유용하게 사용
+         
+     * 정확값 쿼리 (Exact Value Query)
+     
+       * 검색 조건의 참/거짓 여부만 판별해서 결과를 가져오는 것
+       
+       * bool : filter
+       
+         * 조건은 추가하지만 스코어에는 영향을 주지 않도록 제어할 때 사용
+         * filter 내부에서 must_not과 같은 다른 bool 쿼리를 포함하려면 filter 내부에 bool 쿼리를 먼저 넣고 그 안에 다시 must_not을 넣어야 함
+         
+       * Keyword
+       
+         * 검색 문자열과 공백, 대소문자까지 정확히 일치하는 데이터만을 결과로 리턴
+         
+     * 범위 쿼리 (Range Query)
+     
+       * `range : { <필드명>: { <파라메터>:<값> } }` 으로 입력
+       
+       * range 쿼리 파라메터
+       
+          * gte (Greater-than or equal to) - 이상 (같거나 큼)
+          * gt (Greater-than) – 초과 (큼)
+          * lte (Less-than or equal to) - 이하 (같거나 작음)
+          * lt (Less-than) - 미만 (작음)
+         
+            
+            
+       
+           
+           
+           
+          
+           
+          
+         
+         
+       
+     
+     
+     
+    
+ 
+  
+  
+  
+  
+  
+         
+         
+       
     
   
   
